@@ -1,8 +1,9 @@
 import sys
-import pika
 import uuid
 
-from configs import QUEUE, EXCHANGE, CONN_PARAMS
+import pika
+
+from configs import CONN_PARAMS, DEFAUT_EXCHANGE, QUEUE
 
 n = int(sys.argv[1])
 if not n:
@@ -22,6 +23,6 @@ with connection:
                     content_type="text/plain",
                 ),
                 routing_key=QUEUE,
-                exchange=EXCHANGE,
+                exchange=DEFAUT_EXCHANGE,
                 body=body,
             )

@@ -1,19 +1,14 @@
-import pika
+from pika import BlockingConnection
+from pika.adapters.blocking_connection import BlockingChannel
 
+from base_consumer import run
 from work import work
-from configs import QUEUE, CONN_PARAMS, PREFETCH_COUNT
 
 
-connection = pika.BlockingConnection(CONN_PARAMS)
-with connection:
-    channel = connection.channel()
-    with channel:
-        channel.queue_declare(queue=QUEUE, durable=True)
-        channel.basic_qos(prefetch_count=PREFETCH_COUNT)
+def for_consumer(_: BlockingConnection, channel: BlockingChannel, queue: str):
+    for method_frame, header_frame, body in channel.consume(queue=queue):
+        work(channel, method_frame, header_frame, body)
 
-        try:
-            for method, properties, body in channel.consume(queue=QUEUE):
-                work(channel, method, properties, body)
-        except KeyboardInterrupt:
-            requeued_messages = channel.cancel()
-            print("Requeued %i messages" % requeued_messages)
+
+if __name__ == "__main__":
+    run(for_consumer)

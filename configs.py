@@ -4,6 +4,6 @@ import pika
 CONN_PARAMS = pika.ConnectionParameters(host="localhost", heartbeat=60)
 
 QUEUE = "test-queue"
-EXCHANGE = ""
+DEFAUT_EXCHANGE = ""
 
 PREFETCH_COUNT = 5

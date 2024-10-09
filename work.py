@@ -1,13 +1,23 @@
-import pika
-import time
+import os
 import random
+import threading
+import time
 
-import pika.adapters.blocking_connection
+from pika.adapters.blocking_connection import BlockingChannel
 
 
-def work(ch: pika.adapters.blocking_connection.BlockingChannel, method, _, body):
-    print(f"INIT {body}")
+def log(msg):
+    print(f"[{os.getpid()}] [{threading.get_ident()}] {msg}")
+
+
+def work(
+    ch: BlockingChannel,
+    method_frame,
+    header_frame,
+    body,
+):
+    log(f"INIT {body}")
     time.sleep(3 * random.random())
 
-    print(f"DONE {body}")
-    ch.basic_ack(delivery_tag=method.delivery_tag)
+    log(f"DONE {body}")
+    ch.basic_ack(delivery_tag=method_frame.delivery_tag)
