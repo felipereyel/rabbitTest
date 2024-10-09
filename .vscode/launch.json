@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "For Consumer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "for_consumer.py",
+      "console": "integratedTerminal",
+    },
+    {
+      "name": "CB Consumer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "cb_consumer.py",
+      "console": "integratedTerminal",
+    }
+  ]
+}
