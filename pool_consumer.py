@@ -13,7 +13,7 @@ def done_callback(connection, channel, method_frame, result):
 
 
 def pool_consumer(connection: BlockingConnection, channel: BlockingChannel, queue: str):
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_tasks_per_child=5) as executor:
         for method_frame, header_frame, body in channel.consume(queue=queue):
             result = executor.submit(work, body, method_frame)
             cb = functools.partial(done_callback, connection, channel, method_frame)
