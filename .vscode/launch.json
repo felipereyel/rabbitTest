@@ -14,6 +14,13 @@
       "request": "launch",
       "program": "cb_consumer.py",
       "console": "integratedTerminal",
+    },
+    {
+      "name": "Pool Consumer",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "pool_consumer.py",
+      "console": "integratedTerminal",
     }
   ]
 }
