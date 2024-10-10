@@ -16,7 +16,7 @@ with connection:
         channel.queue_declare(queue=QUEUE, durable=True)
 
         for i in range(n):
-            body = f"{i + 1000} - {uuid.uuid4().hex[:8]}"
+            body = f"{i + 1001} - {uuid.uuid4().hex[:8]}"
             channel.basic_publish(
                 properties=pika.BasicProperties(
                     delivery_mode=pika.DeliveryMode.Persistent,

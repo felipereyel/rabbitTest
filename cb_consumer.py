@@ -2,11 +2,21 @@ from pika import BlockingConnection
 from pika.adapters.blocking_connection import BlockingChannel
 
 from base_consumer import run
-from work import work
+from work import work, ack
+
+
+def callback(
+    channel: BlockingChannel,
+    method_frame,
+    header_frame,
+    body,
+):
+    work(body)
+    ack(channel, method_frame)
 
 
 def cb_consumer(_: BlockingConnection, channel: BlockingChannel, queue: str):
-    channel.basic_consume(queue=queue, on_message_callback=work)
+    channel.basic_consume(queue=queue, on_message_callback=callback)
     channel.start_consuming()
 
 

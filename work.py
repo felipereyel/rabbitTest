@@ -10,14 +10,14 @@ def log(msg):
     print(f"[{os.getpid()}] [{threading.get_ident()}] {msg}")
 
 
-def work(
-    ch: BlockingChannel,
-    method_frame,
-    header_frame,
-    body,
-):
+def work(body):
     log(f"INIT {body}")
     time.sleep(3 * random.random())
-
     log(f"DONE {body}")
-    ch.basic_ack(delivery_tag=method_frame.delivery_tag)
+
+
+def ack(channel: BlockingChannel, method_frame):
+    if channel.is_open:
+        channel.basic_ack(method_frame.delivery_tag)
+    else:
+        log("Error: Channel is closed, cannot ACK message")
