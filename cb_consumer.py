@@ -2,7 +2,7 @@ from pika import BlockingConnection
 from pika.adapters.blocking_connection import BlockingChannel
 
 from base_consumer import run
-from work import work, ack
+from work import ack, work
 
 
 def callback(
@@ -11,7 +11,7 @@ def callback(
     header_frame,
     body,
 ):
-    work(body)
+    work(body, method_frame)
     ack(channel, method_frame)
 
 

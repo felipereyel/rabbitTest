@@ -17,5 +17,6 @@ def run(consume: Callable[[pika.BlockingConnection, BlockingChannel, str], None]
             try:
                 consume(connection, channel, QUEUE)
             except (Exception, KeyboardInterrupt) as e:
-                print(f"Requeued {channel.cancel()} messages")
+                if channel.is_open:
+                    print(f"Requeued {channel.cancel()} messages")
                 print(e)
